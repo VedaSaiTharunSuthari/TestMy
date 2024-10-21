@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Tech Guy Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styling */
+        .header {
+            background-color: black;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Container for login and registration */
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Welcome page styling */
+        .welcome-message {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid black;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Non-Tech Guy</h1>
+        <p>Website</p>
+    </div>
+
+    <!-- Login Form -->
+    <div class="container" id="loginContainer">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit">Login</button>
+            <div class="links">
+                <a href="#" id="registerLink">Create New Account or Register</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container" id="registerContainer" style="display: none;">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="newUsername">Username</label>
+                <input type="text" id="newUsername" required>
+            </div>
+            <div class="input-group">
+                <label for="newPassword">Password</label>
+                <input type="password" id="newPassword" required>
+            </div>
+            <button type="submit">Register</button>
+            <div class="links">
+                <a href="#" id="backToLogin">Back to Login</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Welcome Page -->
+    <div class="welcome-message" id="welcomeMessage" style="display: none;">
+        <p>Hai, Welcome to my World</p>
+    </div>
+
+    <script>
+        // Store registered user data in localStorage (for demo purposes)
+        let registeredUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+
+        // Elements
+        const loginContainer = document.getElementById("loginContainer");
+        const registerContainer = document.getElementById("registerContainer");
+        const welcomeMessage = document.getElementById("welcomeMessage");
+
+        // Toggle to registration form
+        document.getElementById("registerLink").addEventListener("click", function(event) {
+            event.preventDefault();
+            loginContainer.style.display = "none";
+            registerContainer.style.display = "block";
+        });
+
+        // Toggle back to login form
+        document.getElementById("backToLogin").addEventListener("click", function(event) {
+            event.preventDefault();
+            registerContainer.style.display = "none";
+            loginContainer.style.display = "block";
+        });
+
+        // Register form handling
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const newUsername = document.getElementById("newUsername").value;
+            const newPassword = document.getElementById("newPassword").value;
+            
+            // Save new user to localStorage
+            registeredUser = { username: newUsername, password: newPassword };
+            localStorage.setItem('user', JSON.stringify(registeredUser));
+            alert("Registration successful. You can now login.");
+            
+            // Redirect back to login
+            registerContainer.style.display = "none";
+            loginContainer.style.display = "block";
+        });
+
+        // Login form handling
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const loginUsername = document.getElementById("loginUsername").value;
+            const loginPassword = document.getElementById("loginPassword").value;
+
+            if (registeredUser && loginUsername === registeredUser.username && loginPassword === registeredUser.password) {
+                // Successful login, redirect to welcome page
+                loginContainer.style.display = "none";
+                welcomeMessage.style.display = "block";
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
